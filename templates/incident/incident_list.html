@@ -1,0 +1,50 @@
+{% extends  "index.html" %}
+{% block content%}
+<div class="mt-3 text-right mr-3">
+    <a class="btn btn-dark" href="{% url 'add_incident' %}">Add Incident </a>
+</div>
+<div class="container-fluid pt-3">
+    <div class="row">
+        {% if incidents %}
+        <table class="table">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Incident ID</th>
+                <th scope="col">Reporter Name</th>
+                <th scope="col">incident_detail</th>
+                <th scope="col">priority</th>
+                <th scope="col">incident_status</th>
+                <th scope="col">report_date</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for incident in incidents %}
+                <tr>
+                    <th scope="row">{{incident.incident_id}}</th>
+                    <td>{{incident.reporter_name.username}}</td>
+                    <td>{{incident.incident_detail}}</td>
+                    <td>{{incident.get_priority_display}}</td>
+                    <td>{{incident.get_incident_status_display}}</td>
+                    <td>{{incident.report_date}}</td>
+                    <td>
+                        {% if incident.incident_status != 'C' %}
+                            <a href="{% url 'update_incident' incident.id %}">
+                                    <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                            </a>
+                        {% else %}
+
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            0 Incidents available
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    container_name: IMS_1
+    command: python manage.py runserver 0.0.0.0:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - djangonetwork
+
+  db:
+    container_name: postgres_container
+    image: postgres:12.18-alpine3.19
+    restart: always
+    environment:
+      POSTGRES_DB: imsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - djangonetwork
+    volumes:
+      - .:/code
+
+networks:
+  djangonetwork:
+    driver: bridge
